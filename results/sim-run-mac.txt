@@ -1,0 +1,22 @@
+
+== order=fifo  pool=8 GiB  blocks=4681  peak live KV=1.02 GiB (max over seeds)
+requests done | per-layer layer | per-layer 256MiB | per-layer 64MiB | per-layer 16MiB | per-block 64MiB
+            1 |           8.00 |           7.00 |           1.75 |           0.88 |           0.66
+            5 |           8.00 |           7.00 |           1.75 |           1.75 |           1.52
+           10 |           8.00 |           7.00 |           3.50 |           2.62 |           2.36
+           20 |           8.00 |           7.00 |           5.25 |           4.52 |           4.39
+           40 |           8.00 |           8.00 |           8.00 |           8.00 |           7.98
+           80 |           8.00 |           8.00 |           8.00 |           8.00 |           8.00
+          160 |           8.00 |           8.00 |           8.00 |           8.00 |           8.00
+          400 |           8.00 |           8.00 |           8.00 |           8.00 |           8.00
+
+== order=lowest  pool=8 GiB  blocks=4681  peak live KV=1.02 GiB (max over seeds)
+requests done | per-layer layer | per-layer 256MiB | per-layer 64MiB | per-layer 16MiB | per-block 64MiB
+            1 |           8.00 |           7.00 |           1.75 |           0.88 |           0.66
+            5 |           8.00 |           7.00 |           1.75 |           1.17 |           0.90
+           10 |           8.00 |           7.00 |           1.75 |           1.17 |           0.90
+           20 |           8.00 |           7.00 |           1.75 |           1.31 |           0.96
+           40 |           8.00 |           7.00 |           1.75 |           1.31 |           0.98
+           80 |           8.00 |           7.00 |           1.75 |           1.31 |           0.98
+          160 |           8.00 |           7.00 |           1.75 |           1.31 |           0.98
+          400 |           8.00 |           7.00 |           1.75 |           1.31 |           1.05
