@@ -1,0 +1,8 @@
+pool=4 GiB layers=28 blocks=2340 chunk=layer (1/layer, 28 buffers) order=lowest
+after allocation       measured=  0.00  predicted=  0.00  (GiB)
+requests done 1        measured=  4.00  predicted=  4.00  (GiB)
+requests done 5        measured=  4.00  predicted=  4.00  (GiB)
+requests done 10       measured=  4.00  predicted=  4.00  (GiB)
+requests done 20       measured=  4.00  predicted=  4.00  (GiB)
+requests done 40       measured=  4.00  predicted=  4.00  (GiB)
+requests done 80       measured=  4.00  predicted=  4.00  (GiB)

@@ -1,0 +1,659 @@
+{
+ "args": {
+  "pool_gib": 12.0,
+  "layers": 28,
+  "kv_heads": 8,
+  "head_dim": 128,
+  "block_size": 16,
+  "max_seqs": 8,
+  "prompt_min": 128,
+  "prompt_max": 4096,
+  "out_min": 128,
+  "out_max": 1024,
+  "requests": 400,
+  "seeds": 3,
+  "json": "sim/result-12g-busy.json"
+ },
+ "rows": [
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": null,
+   "requests_done": 1,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 256,
+   "requests_done": 1,
+   "committed_gib": "7.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 64,
+   "requests_done": 1,
+   "committed_gib": "3.50",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 16,
+   "requests_done": 1,
+   "committed_gib": "2.77",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-block-range",
+   "chunk_mib": 64,
+   "requests_done": 1,
+   "committed_gib": "2.52",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": null,
+   "requests_done": 5,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 256,
+   "requests_done": 5,
+   "committed_gib": "7.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 64,
+   "requests_done": 5,
+   "committed_gib": "4.08",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 16,
+   "requests_done": 5,
+   "committed_gib": "3.79",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-block-range",
+   "chunk_mib": 64,
+   "requests_done": 5,
+   "committed_gib": "3.59",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": null,
+   "requests_done": 10,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 256,
+   "requests_done": 10,
+   "committed_gib": "7.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 64,
+   "requests_done": 10,
+   "committed_gib": "6.42",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 16,
+   "requests_done": 10,
+   "committed_gib": "5.40",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-block-range",
+   "chunk_mib": 64,
+   "requests_done": 10,
+   "committed_gib": "5.39",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": null,
+   "requests_done": 20,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 256,
+   "requests_done": 20,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 64,
+   "requests_done": 20,
+   "committed_gib": "9.33",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 16,
+   "requests_done": 20,
+   "committed_gib": "8.46",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-block-range",
+   "chunk_mib": 64,
+   "requests_done": 20,
+   "committed_gib": "8.43",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": null,
+   "requests_done": 40,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 256,
+   "requests_done": 40,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 64,
+   "requests_done": 40,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 16,
+   "requests_done": 40,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-block-range",
+   "chunk_mib": 64,
+   "requests_done": 40,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": null,
+   "requests_done": 80,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 256,
+   "requests_done": 80,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 64,
+   "requests_done": 80,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 16,
+   "requests_done": 80,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-block-range",
+   "chunk_mib": 64,
+   "requests_done": 80,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": null,
+   "requests_done": 160,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 256,
+   "requests_done": 160,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 64,
+   "requests_done": 160,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 16,
+   "requests_done": 160,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-block-range",
+   "chunk_mib": 64,
+   "requests_done": 160,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": null,
+   "requests_done": 400,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 256,
+   "requests_done": 400,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 64,
+   "requests_done": 400,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-layer",
+   "chunk_mib": 16,
+   "requests_done": 400,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "fifo",
+   "layout": "per-block-range",
+   "chunk_mib": 64,
+   "requests_done": 400,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": null,
+   "requests_done": 1,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 256,
+   "requests_done": 1,
+   "committed_gib": "7.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 64,
+   "requests_done": 1,
+   "committed_gib": "3.50",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 16,
+   "requests_done": 1,
+   "committed_gib": "2.77",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-block-range",
+   "chunk_mib": 64,
+   "requests_done": 1,
+   "committed_gib": "2.52",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": null,
+   "requests_done": 5,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 256,
+   "requests_done": 5,
+   "committed_gib": "7.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 64,
+   "requests_done": 5,
+   "committed_gib": "3.50",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 16,
+   "requests_done": 5,
+   "committed_gib": "3.06",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-block-range",
+   "chunk_mib": 64,
+   "requests_done": 5,
+   "committed_gib": "2.71",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": null,
+   "requests_done": 10,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 256,
+   "requests_done": 10,
+   "committed_gib": "7.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 64,
+   "requests_done": 10,
+   "committed_gib": "3.50",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 16,
+   "requests_done": 10,
+   "committed_gib": "3.21",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-block-range",
+   "chunk_mib": 64,
+   "requests_done": 10,
+   "committed_gib": "2.89",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": null,
+   "requests_done": 20,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 256,
+   "requests_done": 20,
+   "committed_gib": "7.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 64,
+   "requests_done": 20,
+   "committed_gib": "3.50",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 16,
+   "requests_done": 20,
+   "committed_gib": "3.21",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-block-range",
+   "chunk_mib": 64,
+   "requests_done": 20,
+   "committed_gib": "2.95",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": null,
+   "requests_done": 40,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 256,
+   "requests_done": 40,
+   "committed_gib": "7.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 64,
+   "requests_done": 40,
+   "committed_gib": "3.50",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 16,
+   "requests_done": 40,
+   "committed_gib": "3.35",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-block-range",
+   "chunk_mib": 64,
+   "requests_done": 40,
+   "committed_gib": "3.06",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": null,
+   "requests_done": 80,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 256,
+   "requests_done": 80,
+   "committed_gib": "7.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 64,
+   "requests_done": 80,
+   "committed_gib": "3.50",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 16,
+   "requests_done": 80,
+   "committed_gib": "3.35",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-block-range",
+   "chunk_mib": 64,
+   "requests_done": 80,
+   "committed_gib": "3.06",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": null,
+   "requests_done": 160,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 256,
+   "requests_done": 160,
+   "committed_gib": "7.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 64,
+   "requests_done": 160,
+   "committed_gib": "3.50",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 16,
+   "requests_done": 160,
+   "committed_gib": "3.35",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-block-range",
+   "chunk_mib": 64,
+   "requests_done": 160,
+   "committed_gib": "3.06",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": null,
+   "requests_done": 400,
+   "committed_gib": "12.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 256,
+   "requests_done": 400,
+   "committed_gib": "7.00",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 64,
+   "requests_done": 400,
+   "committed_gib": "3.50",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-layer",
+   "chunk_mib": 16,
+   "requests_done": 400,
+   "committed_gib": "3.50",
+   "peak_live_gib": 3.259
+  },
+  {
+   "order": "lowest",
+   "layout": "per-block-range",
+   "chunk_mib": 64,
+   "requests_done": 400,
+   "committed_gib": "3.22",
+   "peak_live_gib": 3.259
+  }
+ ]
+}
