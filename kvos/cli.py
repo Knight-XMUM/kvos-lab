@@ -12,6 +12,7 @@ from kvos.apple import get_apple_silicon_info
 from kvos.bench import export_bench_results, format_bench_table, run_residency_sweep
 from kvos.budget import compute_kv_budget
 from kvos.governor import GovernorThresholds, KVGovernor
+from kvos.plot import render_bench_svg
 from kvos.policy import DualPlaneKVTracker, FifoAllocator, LowestIdAllocator
 
 
@@ -164,6 +165,15 @@ def _cmd_bench(args: argparse.Namespace) -> int:
         out_path = Path(args.out)
         export_bench_results(points, out_path)
         print(f"\nSaved {len(points)} rows to {out_path}")
+        if args.plot and out_path.suffix.lower() == ".csv":
+            svg_path = render_bench_svg(out_path, Path(args.plot))
+            print(f"Rendered SVG chart to {svg_path}")
+    return 0
+
+
+def _cmd_plot(args: argparse.Namespace) -> int:
+    svg_path = render_bench_svg(Path(args.input), Path(args.out), title=args.title)
+    print(f"Rendered SVG chart to {svg_path}")
     return 0
 
 
@@ -202,14 +212,26 @@ def build_parser() -> argparse.ArgumentParser:
     p_sim.set_defaults(func=_cmd_sim)
 
     p_bench = sub.add_parser("bench", help="Run MLX unified-memory residency & wired-cliff sweep")
-    p_bench.add_argument("--steps", type=str, default="1.0,2.0,4.0", help="Comma-separated pool sizes (GiB)")
+    p_bench.add_argument("--steps", type=str, default="1.0,2.0,4.0,6.0,8.0", help="Comma-separated pool sizes (GiB)")
     p_bench.add_argument("--modes", type=str, default="nowired,wired", help="Comma-separated modes")
     p_bench.add_argument("--layers", type=int, default=28, help="Number of layers")
     p_bench.add_argument("--kv-heads", type=int, default=8, help="Number of KV heads")
     p_bench.add_argument("--head-dim", type=int, default=128, help="Head dim")
     p_bench.add_argument("--max-safe-gib", type=float, default=8.0, help="Safety cap (GiB)")
     p_bench.add_argument("--out", type=str, default="", help="Optional CSV/JSON output path")
+    p_bench.add_argument("--plot", type=str, default="", help="Optional SVG output path (requires --out .csv)")
     p_bench.set_defaults(func=_cmd_bench)
+
+    p_plot = sub.add_parser("plot", help="Render an SVG chart from a kvos bench CSV file")
+    p_plot.add_argument("--input", "-i", type=str, required=True, help="Input CSV path")
+    p_plot.add_argument("--out", "-o", type=str, required=True, help="Output SVG path")
+    p_plot.add_argument(
+        "--title",
+        type=str,
+        default="Apple Silicon Unified Memory KV Residency & Wired Lock-in (M4 Air 24GB)",
+        help="Chart title",
+    )
+    p_plot.set_defaults(func=_cmd_plot)
 
     return parser
 

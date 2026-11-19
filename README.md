@@ -95,3 +95,9 @@ python3 sim/commit_sim.py --help
 
 1. **启动期惰性假象（Lazy Init Trap）**：`MlxAttentionKVPool.__init__` 仅创建未求值的 `mx.zeros` 图节点，此时 `mx.get_active_memory()` 与 `mincore` 均为 `0.00 GiB`；直到首次 `eval` 或首个请求写入时才瞬间触发 2.00 GiB 物理页分配与锁页。
 2. **`clear()` 后的幽灵锁页（Ghost Wired Pages）**：在 SGLang 默认的 `wired` 模式下，调用 `pool.clear()` 重新赋值为新的惰性 `mx.zeros` 后，**`mx.get_active_memory()` 降为 `0.00 GiB`，但 macOS 内核的 `wired` 内存仍死锁在 `+2.23 GiB`**（旧 buffer 退入 MLX Metal cache 且仍受 wired limit 锁定），若不配合 `mx.clear_cache()` 或受控 wired 策略，这部分物理内存无法被系统回收。
+
+## 实验 3：24GB 统一内存 1–8 GiB 梯度压测（`kvos bench`）
+
+[results/bench-m4-air.svg]
+
+原始数据：[`results/bench-m4-air.csv`](results/bench-m4-air.csv)（MacBook Air M4 24GB，预热后 5 次 matmul 中位数延迟）。`wired` 模式下释放引用不调 `mx.clear_cache()` 时，`Ghost Lock` 随池容量从 `0.95 GiB` 线性锁死至 `8.11 GiB`；`nowired` 模式在 `8.00 GiB` 触发系统压力回收，幽灵锁页回落至 `4.00 GiB`。

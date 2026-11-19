@@ -6,7 +6,7 @@ and `wired` modes, measuring:
   - MLX logical active & cache memory deltas (GiB)
   - XNU `vm_stat` wired / compressed / pageouts deltas (GiB)
   - Ghost wired lock-in after releasing the pool without `mx.clear_cache()`
-  - Probe matmul latency (ms) to spot compression/swap slowdown cliffs
+  - Warmed-up median probe matmul latency (ms) to spot compression/swap cliffs
 
 Exports results directly to CSV/JSON for reproducible plotting and README tables.
 """
@@ -15,12 +15,13 @@ from __future__ import annotations
 
 import csv
 import json
+import statistics
 import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
-from kvos.probe import GIB, MemoryProbe
+from kvos.probe import GIB, MemoryProbe, vm_stat_metrics
 
 
 @dataclass
@@ -32,6 +33,7 @@ class BenchPoint:
     mlx_cache_delta_gib: float
     wired_delta_gib: float
     compressed_delta_gib: float
+    pageouts_delta_gib: float
     ghost_wired_after_release_gib: float
     probe_matmul_ms: float
 
@@ -47,8 +49,9 @@ def run_residency_sweep(
     n_kv_heads: int = 8,
     head_dim: int = 128,
     max_safe_gib: float = 8.0,
+    matmul_iters: int = 5,
 ) -> list[BenchPoint]:
-    """Run an MLX KV-pool residency & wired-cliff sweep on Apple Silicon."""
+    """Run a warmed-up MLX KV-pool residency & wired-cliff sweep on Apple Silicon."""
     import mlx.core as mx
 
     for g in steps_gib:
@@ -62,6 +65,10 @@ def run_residency_sweep(
     b = mx.ones((1024, 1024), dtype=mx.float16)
     mx.eval(a, b)
 
+    # Warm up Metal matmul shader/pipeline before timing to avoid cold-start spikes
+    for _ in range(3):
+        mx.eval(a @ b)
+
     results: list[BenchPoint] = []
     for mode in modes:
         for target_gib in steps_gib:
@@ -73,6 +80,7 @@ def run_residency_sweep(
                 mx.set_wired_limit(0)
 
             time.sleep(0.3)
+            base_pageouts = vm_stat_metrics()["pageouts_gib"]
             probe = MemoryProbe(logical_pool_gib=target_gib)
             slots = max(1, int(target_gib * GIB) // bytes_per_slot)
             bufs = [
@@ -82,10 +90,14 @@ def run_residency_sweep(
             mx.eval(*bufs)
             time.sleep(0.3)
             snap_eval = probe.record("eval", bufs, buffers_evaluated=True)
+            pageouts_delta = max(0.0, vm_stat_metrics()["pageouts_gib"] - base_pageouts)
 
-            t0 = time.perf_counter()
-            mx.eval(a @ b)
-            matmul_ms = (time.perf_counter() - t0) * 1000.0
+            latencies_ms: list[float] = []
+            for _ in range(max(1, matmul_iters)):
+                t0 = time.perf_counter()
+                mx.eval(a @ b)
+                latencies_ms.append((time.perf_counter() - t0) * 1000.0)
+            matmul_ms = statistics.median(latencies_ms)
 
             # Drop Python references without calling mx.clear_cache() to measure ghost wired lock-in
             del bufs
@@ -101,6 +113,7 @@ def run_residency_sweep(
                     mlx_cache_delta_gib=round(snap_eval.mlx_cache_delta_gib, 2),
                     wired_delta_gib=round(snap_eval.wired_delta_gib, 2),
                     compressed_delta_gib=round(snap_eval.compressed_delta_gib, 2),
+                    pageouts_delta_gib=round(pageouts_delta, 3),
                     ghost_wired_after_release_gib=round(snap_release.ghost_wired_gib, 2),
                     probe_matmul_ms=round(matmul_ms, 2),
                 )
@@ -129,7 +142,7 @@ def export_bench_results(points: list[BenchPoint], out_path: Path) -> None:
 def format_bench_table(points: list[BenchPoint]) -> str:
     header = (
         f"{'Mode':<8} | {'Target':>6} | {'mincore':>7} | {'OS Wired':>8} | "
-        f"{'Comp':>6} | {'Ghost Lock':>10} | {'Matmul':>8}"
+        f"{'Comp':>6} | {'Swap+':>6} | {'Ghost Lock':>10} | {'Matmul':>8}"
     )
     sep = "-" * len(header)
     lines = [header, sep]
@@ -137,6 +150,7 @@ def format_bench_table(points: list[BenchPoint]) -> str:
         lines.append(
             f"{p.mode:<8} | {p.target_gib:>5.2f}G | {p.mincore_gib:>6.2f}G | "
             f"{p.wired_delta_gib:>+7.2f}G | {p.compressed_delta_gib:>+5.2f}G | "
-            f"{p.ghost_wired_after_release_gib:>9.2f}G | {p.probe_matmul_ms:>6.2f}ms"
+            f"{p.pageouts_delta_gib:>5.2f}G | {p.ghost_wired_after_release_gib:>9.2f}G | "
+            f"{p.probe_matmul_ms:>6.2f}ms"
         )
     return "\n".join(lines)
