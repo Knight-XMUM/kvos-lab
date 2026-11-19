@@ -73,3 +73,25 @@ python3 sim/commit_sim.py --help
 
 - vllm-metal #1198 的复现（M4 Air 24GB，4–12 GiB 池）：[评论](https://github.com/vllm-project/vllm-metal/issues/1198#issuecomment-6888153102)
 - PR #1351 的测试（main 与 PR 分支对比）：[评论](https://github.com/vllm-project/vllm-metal/pull/1351#issuecomment-6889187861)
+- [`sim/`](sim/) & [`experiments/`](experiments/)：跨引擎（`vllm-metal`、`sglang`）的可复现实验与真机测量脚本。
+
+## 实验 2：SGLang `MlxAttentionKVPool` 的惰性分配陷阱与 Wired 幽灵锁页
+
+背景：SGLang Apple Silicon 后端中的 `MlxAttentionKVPool`（`python/sglang/srt/hardware_backend/mlx/kv_cache/mlx_kv_pool.py`）使用 `mx.zeros((pool_size, n_kv_heads, head_dim))` 创建和清理（`clear()`）每层 K/V 缓冲区，且 `MlxModelRunner` 默认开启 `mx.set_wired_limit(max_recommended_working_set_size)`。
+
+### 真机实测（MacBook Air M4 24GB，2.00 GiB KV 池，28 层，56 个 buffer，2026-11-17）
+
+脚本：[`experiments/sglang_kv_pool_residency.py`](experiments/sglang_kv_pool_residency.py)，原始输出：[`results/exp2-sglang-kv-pool-mac.txt`](results/exp2-sglang-kv-pool-mac.txt)。
+
+| 阶段 | `nowired`：`mincore` | `nowired`：`mlx_active` | `nowired`：OS `wired` | `wired`（SGLang 默认）：`mincore` | `wired`：`mlx_active` | `wired`：OS `wired` |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1. `after __init__ (lazy)` | 0.00 GiB | +0.00 GiB | +0.00 GiB | 0.00 GiB | +0.00 GiB | +0.00 GiB |
+| 2. `after mx.eval(pool)` | 2.00 GiB | +2.00 GiB | +1.93 GiB | 2.00 GiB | +2.00 GiB | +2.22 GiB |
+| 3. `after unrelated op` | 2.00 GiB | +2.00 GiB | -0.10 GiB | 2.00 GiB | +2.00 GiB | +2.23 GiB |
+| 4. **`after clear() (lazy)`** | **0.00 GiB** | **+0.00 GiB** | **-0.09 GiB** | **0.00 GiB** | **+0.00 GiB** | **+2.23 GiB** |
+| 5. `after clear() + eval` | 2.00 GiB | +2.00 GiB | +1.91 GiB | 2.00 GiB | +2.00 GiB | +2.23 GiB |
+
+### 核心发现
+
+1. **启动期惰性假象（Lazy Init Trap）**：`MlxAttentionKVPool.__init__` 仅创建未求值的 `mx.zeros` 图节点，此时 `mx.get_active_memory()` 与 `mincore` 均为 `0.00 GiB`；直到首次 `eval` 或首个请求写入时才瞬间触发 2.00 GiB 物理页分配与锁页。
+2. **`clear()` 后的幽灵锁页（Ghost Wired Pages）**：在 SGLang 默认的 `wired` 模式下，调用 `pool.clear()` 重新赋值为新的惰性 `mx.zeros` 后，**`mx.get_active_memory()` 降为 `0.00 GiB`，但 macOS 内核的 `wired` 内存仍死锁在 `+2.23 GiB`**（旧 buffer 退入 MLX Metal cache 且仍受 wired limit 锁定），若不配合 `mx.clear_cache()` 或受控 wired 策略，这部分物理内存无法被系统回收。

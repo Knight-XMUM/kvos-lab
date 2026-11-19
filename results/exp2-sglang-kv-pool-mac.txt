@@ -1,0 +1,13 @@
+=== mode=nowired target=2.00 GiB (slots=18724, buffers=56) ===
+after __init__ (lazy): active_rise=0.00 GiB, wired_rise=0.00 GiB
+after mx.eval:         mincore=2.00 GiB, active_rise=2.00 GiB, wired_rise=1.93 GiB
+after unrelated op:    mincore=2.00 GiB, active_rise=2.00 GiB, wired_rise=-0.10 GiB
+after clear() (lazy):  active_rise=0.00 GiB, wired_rise=-0.09 GiB
+after clear()+eval:    mincore=2.00 GiB, active_rise=2.00 GiB, wired_rise=1.91 GiB
+
+=== mode=wired target=2.00 GiB (slots=18724, buffers=56) ===
+after __init__ (lazy): active_rise=0.00 GiB, wired_rise=0.00 GiB
+after mx.eval:         mincore=2.00 GiB, active_rise=2.00 GiB, wired_rise=2.22 GiB
+after unrelated op:    mincore=2.00 GiB, active_rise=2.00 GiB, wired_rise=2.23 GiB
+after clear() (lazy):  active_rise=0.00 GiB, wired_rise=2.23 GiB
+after clear()+eval:    mincore=2.00 GiB, active_rise=2.00 GiB, wired_rise=2.23 GiB

@@ -1,0 +1,7 @@
+mode,target_gib,mincore_gib,mlx_active_delta_gib,mlx_cache_delta_gib,wired_delta_gib,compressed_delta_gib,ghost_wired_after_release_gib,probe_matmul_ms
+nowired,1.0,1.0,1.0,0.0,0.95,-0.0,0.62,66.96
+nowired,2.0,2.0,2.0,0.0,2.4,0.3,2.44,3.54
+nowired,4.0,4.0,4.0,0.0,3.47,0.53,3.5,3.72
+wired,1.0,1.0,1.0,0.0,0.92,-0.0,0.92,4.17
+wired,2.0,2.0,2.0,0.0,2.03,-0.0,2.03,3.19
+wired,4.0,4.0,4.0,0.0,4.01,-0.0,4.0,3.19
