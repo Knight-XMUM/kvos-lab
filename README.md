@@ -98,6 +98,6 @@ python3 sim/commit_sim.py --help
 
 ## 实验 3：24GB 统一内存 1–8 GiB 梯度压测（`kvos bench`）
 
-[results/bench-m4-air.svg]
+![Apple Silicon Unified Memory KV Residency & Wired Lock-in](results/bench-m4-air.svg)
 
 原始数据：[`results/bench-m4-air.csv`](results/bench-m4-air.csv)（MacBook Air M4 24GB，预热后 5 次 matmul 中位数延迟）。`wired` 模式下释放引用不调 `mx.clear_cache()` 时，`Ghost Lock` 随池容量从 `0.95 GiB` 线性锁死至 `8.11 GiB`；`nowired` 模式在 `8.00 GiB` 触发系统压力回收，幽灵锁页回落至 `4.00 GiB`。
