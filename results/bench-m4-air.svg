@@ -9,7 +9,7 @@
   .frame { stroke: #94A3B8; stroke-width: 1.2; fill: none; }
 </style>
 <rect x="0" y="0" width="960" height="420" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
-<text x="28" y="34" class="title">Apple Silicon Unified Memory KV Residency & Wired Lock-in (M4 Air 24GB)</text>
+<text x="28" y="34" class="title">Apple Silicon Unified Memory KV Residency &amp; Wired Lock-in (M4 Air 24GB)</text>
 <line x1="690" y1="28" x2="710" y2="28" stroke="#E11D48" stroke-width="3"/>
 <circle cx="700" cy="28" r="4" fill="#E11D48"/>
 <text x="716" y="32" class="axis" font-weight="600">wired</text>

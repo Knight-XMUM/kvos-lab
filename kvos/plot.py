@@ -7,6 +7,7 @@ and postgraduate defense slides without requiring matplotlib.
 from __future__ import annotations
 
 import csv
+from html import escape
 from pathlib import Path
 from typing import Any
 
@@ -84,7 +85,7 @@ def render_bench_svg(
         "  .frame { stroke: #94A3B8; stroke-width: 1.2; fill: none; }",
         "</style>",
         f'<rect x="0" y="0" width="{W}" height="{H}" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>',
-        f'<text x="28" y="34" class="title">{title}</text>',
+        f'<text x="28" y="34" class="title">{escape(title)}</text>',
     ]
 
     # Legend at top-right
@@ -108,7 +109,7 @@ def render_bench_svg(
         ymax: float,
         show_ideal_diag: bool = False,
     ) -> None:
-        svg.append(f'<text x="{px}" y="{py - 12}" class="subtitle">{panel_title}</text>')
+        svg.append(f'<text x="{px}" y="{py - 12}" class="subtitle">{escape(panel_title)}</text>')
         # Horizontal gridlines (4 intervals)
         for i in range(5):
             yv = ymin + (ymax - ymin) * i / 4.0

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import tempfile
 import unittest
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from kvos.cli import main as cli_main
@@ -20,8 +21,9 @@ class TestKvosPlot(unittest.TestCase):
             out_svg = Path(tmp) / "chart.svg"
             render_bench_svg(csv_path, out_svg)
             content = out_svg.read_text(encoding="utf-8")
-            self.assertIn("<svg", content)
-            self.assertIn("</svg>", content)
+            # Strict XML validation (catches unescaped '&' that breaks GitHub SVG rendering)
+            root = ET.fromstring(content)
+            self.assertTrue(root.tag.endswith("svg"))
             self.assertIn("Ghost Wired Lock-in", content)
             self.assertIn("wired", content)
             self.assertIn("nowired", content)
