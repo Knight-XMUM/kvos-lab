@@ -58,12 +58,10 @@ kvos-lab/
 ├── experiments/           # 针对 SGLang 等引擎的实证脚本
 ├── sim/                   # vllm-metal 块分配模拟器与真机 mincore 测量脚本
 ├── results/               # 实测 CSV、TXT 原始记录与 SVG 图表
-├── tests/                 # 单元测试（python3 -m unittest discover -s tests -v）
-└── ROADMAP.md             # 长期演进规划与 408 / 复试边界
+└── tests/                 # 单元测试（python3 -m unittest discover -s tests -v）
 ```
 
-## 上游社区联动与长期规划
+## 上游社区联动
 
 - **vllm-metal**：Issue #1198 统一内存常驻复现与分块粒度实测回复、PR #1351 验证测试
 - **SGLang（Apple Silicon / MLX 后端）**：PR #50939（`ci_utils` & Apple Metal 文档）、PR #50963（`async_chained_decode_mlx` 补传 `lazy_logprobs`）、PR #50964（GQA `get_head_dim` 修复）
-- **长期路线图**：见 [`ROADMAP.md`](ROADMAP.md)
