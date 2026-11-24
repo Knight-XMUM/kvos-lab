@@ -5,9 +5,12 @@ split into smaller Metal buffers, and a GPU read commits the whole buffer it
 lands in, how much memory is committed over time?
 
 Model
-- vLLM's FreeKVCacheBlockQueue hands out blocks from the head and puts freed
-  blocks back at the tail (vllm/v1/core/kv_cache_utils.py, block_pool.py), so
-  block IDs walk through the whole pool. Block 0 is the null block.
+- vLLM's FreeKVCacheBlockQueue hands out blocks from the head. Where freed
+  blocks go depends on prefix caching (BlockPool.free_blocks in
+  vllm/v1/core/block_pool.py): with caching on, blocks with a hash go back to
+  the tail for LRU eviction, so block IDs walk through the whole pool; with
+  caching off, every freed block goes to the front and is reused first.
+  Block 0 is the null block.
 - Every forward step touches the request's blocks in every layer, so all layers
   see the same block IDs.
 - A buffer, once touched, stays committed (nothing decommits it).
@@ -19,8 +22,9 @@ Layouts, for a buffer size C (bytes):
 - per-block-range: one buffer holds a block range for all layers; it covers
   C / (layers * page_bytes) block IDs.
 Allocation orders:
-- fifo: vLLM today.
+- fifo: vLLM with prefix caching on (every freed block treated as hashed).
 - lowest: always hand out the lowest free block ID (a min-heap).
+- lifo: vLLM with prefix caching off (freed blocks go to the front).
 """
 
 from __future__ import annotations
@@ -65,11 +69,29 @@ class Lowest:
         return len(self.h)
 
 
+class Lifo:
+    def __init__(self, n: int):
+        self.q = deque(range(1, n))  # block 0 is the null block
+
+    def take(self) -> int:
+        return self.q.popleft()
+
+    def give(self, ids: list[int]) -> None:
+        # vLLM frees reversed(ids) and prepend_n keeps that order, so ids[-1] is next
+        self.q.extendleft(ids)
+
+    def __len__(self) -> int:
+        return len(self.q)
+
+
+ORDERS = {"fifo": Fifo, "lowest": Lowest, "lifo": Lifo}
+
+
 def simulate(args, order: str, seed: int):
     page = 2 * args.block_size * args.kv_heads * args.head_dim * 2  # K+V, fp16
     n_blocks = int(args.pool_gib * GIB) // (args.layers * page)
     rng = random.Random(seed)
-    pool = Fifo(n_blocks) if order == "fifo" else Lowest(n_blocks)
+    pool = ORDERS[order](n_blocks)
     touched = {0}  # null block is read by padding slots
     running: list[dict] = []
     done = 0
@@ -139,7 +161,7 @@ def main() -> None:
     configs = [("per-layer", None), ("per-layer", 256 * MIB), ("per-layer", 64 * MIB),
                ("per-layer", 16 * MIB), ("per-block-range", 64 * MIB)]
     out = {"args": {k: v for k, v in vars(args).items() if k != "marks"}, "rows": []}
-    for order in ("fifo", "lowest"):
+    for order in ORDERS:
         acc: dict = {}
         peaks = []
         for s in range(args.seeds):
